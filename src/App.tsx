@@ -1,34 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState } from "react";
+import DatePicker from "react-date-picker";
+import TimePicker from "react-time-picker";
+import { AlertTable } from "./AlertTable";
+import { createNewAlert, getAlerts } from "./helpers";
+import { Alert } from "./types";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [date, setDate] = useState(new Date());
+  const [startTime, setStartTime] = useState("09:00");
+  const [endTime, setEndTime] = useState("21:00");
+
+  const [alerts, setAlerts] = useState<Alert[]>([]);
+
+  const refreshAlerts = async () => {
+    const alerts = await getAlerts();
+    setAlerts(alerts);
+  };
 
   return (
-    <div className="App">
-      <div className='flex'>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div>
+      <label title="Date">
+        <DatePicker onChange={(value: Date) => setDate(value)} value={date} />
+      </label>
+      <TimePicker
+        onChange={(value) => {
+          if (typeof value === "string") {
+            setStartTime(value);
+          } else {
+            console.log("other value", { value });
+          }
+        }}
+        value={startTime}
+        disableClock
+      />
+      <TimePicker
+        onChange={(value) => {
+          if (typeof value === "string") {
+            setEndTime(value);
+          } else {
+            console.log("other value", { value });
+          }
+        }}
+        value={endTime}
+        disableClock
+      />
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          createNewAlert({ date, start: startTime, end: endTime });
+          refreshAlerts();
+        }}
+      >
+        Save New Alert
+      </button>
+      <AlertTable alerts={alerts} refreshAlerts={refreshAlerts} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
