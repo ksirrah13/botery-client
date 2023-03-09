@@ -20,7 +20,11 @@ const App = () => {
   return (
     <div>
       <label title="Date">
-        <DatePicker onChange={(value: Date) => setDate(value)} value={date} />
+        <DatePicker
+          onChange={(value: Date) => setDate(value)}
+          value={date}
+          locale="UTC"
+        />
       </label>
       <TimePicker
         onChange={(value) => {
@@ -32,6 +36,7 @@ const App = () => {
         }}
         value={startTime}
         disableClock
+        locale="UTC"
       />
       <TimePicker
         onChange={(value) => {
@@ -43,12 +48,13 @@ const App = () => {
         }}
         value={endTime}
         disableClock
+        locale="UTC"
       />
       <button
-        onClick={(e) => {
+        onClick={async (e) => {
           e.preventDefault();
-          createNewAlert({ date, start: startTime, end: endTime });
-          refreshAlerts();
+          await createNewAlert({ date, start: startTime, end: endTime });
+          await refreshAlerts();
         }}
       >
         Save New Alert

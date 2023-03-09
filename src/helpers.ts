@@ -8,6 +8,8 @@ const createDateFromTimeString = (timeString: string) => {
   const newDate = new Date();
   newDate.setUTCHours(hours);
   newDate.setUTCMinutes(minutes);
+  newDate.setUTCSeconds(0);
+  newDate.setUTCMilliseconds(0);
   return newDate;
 };
 
@@ -45,7 +47,24 @@ export const getAlerts = async () => {
   try {
     const response = await fetch(getAlertUrl);
     const body = await response.json();
-    console.log(body);
+    return body;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const deleteAlert = async (id: string) => {
+  const deleteAlertUrl = `${CONFIG.API_URL}/alert`;
+  const data = { _id: id };
+  try {
+    const response = await fetch(deleteAlertUrl, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const body = await response.json();
     return body;
   } catch (e) {
     console.error(e);
