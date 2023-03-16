@@ -1,4 +1,5 @@
-import { deleteAlert } from "./helpers";
+import { Button } from "@mui/material";
+import { deleteAlert, getCourtName } from "./helpers";
 import { Alert } from "./types";
 
 export const AlertTable = ({
@@ -11,20 +12,21 @@ export const AlertTable = ({
   return (
     <div>
       <h2>Alerts</h2>
-      <button
+      <Button
+        variant="outlined"
         onClick={(e) => {
           e.preventDefault();
           refreshAlerts();
         }}
       >
         Refresh Alerts
-      </button>
+      </Button>
       <table>
         <tr>
           <td>Date</td>
           <td>Start Time</td>
           <td>End Time</td>
-          <td>Court ID</td>
+          <td>Court Name</td>
           <td>Status</td>
         </tr>
         {alerts.map((alert) => (
@@ -51,9 +53,9 @@ const AlertRow = ({
       <td>{alert.date.toString()}</td>
       <td>{alert.startTime.toString()}</td>
       <td>{alert.endTime.toString()}</td>
-      <td>{alert.courtId}</td>
+      <td>{getCourtName(alert.courtId)}</td>
       <td>{alert.status}</td>
-      <button
+      <Button
         onClick={async (e) => {
           e.preventDefault();
           await deleteAlert(alert._id);
@@ -61,7 +63,7 @@ const AlertRow = ({
         }}
       >
         Delete
-      </button>
+      </Button>
     </tr>
   );
 };

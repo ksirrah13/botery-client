@@ -17,14 +17,18 @@ export const createNewAlert = async ({
   date,
   start,
   end,
+  courtName,
 }: {
   date: Date;
   start: string;
   end: string;
+  courtName: string;
 }) => {
   const startTime = createDateFromTimeString(start);
   const endTime = createDateFromTimeString(end);
-  const data = { courtId: "4441573", date, startTime, endTime };
+  const courtIds = getCourtIdsForName(courtName);
+  if (courtIds.length < 1) return;
+  const data = { courtIds, date, startTime, endTime };
   const createAlertUrl = `${CONFIG.API_URL}/alert`;
   try {
     const response = await fetch(createAlertUrl, {
@@ -69,4 +73,28 @@ export const deleteAlert = async (id: string) => {
   } catch (e) {
     console.error(e);
   }
+};
+
+const getCourtIdsForName = (courtName: string) => {
+  const ids = COURT_IDS[courtName];
+  if (ids && ids.length > 0) {
+    return ids;
+  }
+  return [];
+};
+
+const COURT_IDS: Record<string, string[]> = {
+  hamilton: ["4441573", "3333274"],
+  dupont: ["3333198", "3333266", "4441500", "4441524"],
+  "mountain lake": ["3333197", "3333216", "3333202", "3333243"],
+};
+
+export const getCourtName = (id: string) => {
+  for (const entry of Object.entries(COURT_IDS)) {
+    const foundIndex = entry[1].findIndex((arrId) => arrId === id);
+    if (foundIndex !== -1) {
+      return `${entry[0]} #${foundIndex + 1}`;
+    }
+  }
+  return id;
 };

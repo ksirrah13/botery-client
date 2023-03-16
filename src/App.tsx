@@ -4,11 +4,13 @@ import TimePicker from "react-time-picker";
 import { AlertTable } from "./AlertTable";
 import { createNewAlert, getAlerts } from "./helpers";
 import { Alert } from "./types";
+import { Button, MenuItem, Select } from "@mui/material";
 
 const App = () => {
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("21:00");
+  const [courtName, setCourtName] = useState("");
 
   const [alerts, setAlerts] = useState<Alert[]>([]);
 
@@ -50,15 +52,33 @@ const App = () => {
         disableClock
         locale="UTC"
       />
-      <button
+      <Select
+        onChange={(event) => {
+          const value = event.target.value as string;
+          setCourtName(value);
+        }}
+        value={courtName}
+        label="Court Location"
+      >
+        <MenuItem value={"hamilton"}>Hamilton</MenuItem>
+        <MenuItem value={"dupont"}>Dupont</MenuItem>
+        <MenuItem value={"mountain lake"}>Mountain Lake</MenuItem>
+      </Select>
+      <Button
+        variant="contained"
         onClick={async (e) => {
           e.preventDefault();
-          await createNewAlert({ date, start: startTime, end: endTime });
+          await createNewAlert({
+            date,
+            start: startTime,
+            end: endTime,
+            courtName,
+          });
           await refreshAlerts();
         }}
       >
         Save New Alert
-      </button>
+      </Button>
       <AlertTable alerts={alerts} refreshAlerts={refreshAlerts} />
     </div>
   );
