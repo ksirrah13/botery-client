@@ -11,6 +11,7 @@ const App = () => {
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("21:00");
   const [courtName, setCourtName] = useState("");
+  const [userId, setUserId] = useState("");
 
   const [alerts, setAlerts] = useState<Alert[]>([]);
 
@@ -59,10 +60,24 @@ const App = () => {
         }}
         value={courtName}
         label="Court Location"
+        placeholder="Select court location"
       >
         <MenuItem value={"hamilton"}>Hamilton</MenuItem>
         <MenuItem value={"dupont"}>Dupont</MenuItem>
         <MenuItem value={"mountain lake"}>Mountain Lake</MenuItem>
+      </Select>
+      <Select
+        onChange={(event) => {
+          const value = event.target.value as string;
+          setUserId(value);
+        }}
+        value={userId}
+        label="User"
+        placeholder="Select user"
+      >
+        <MenuItem value={"kyle"}>Kyle</MenuItem>
+        <MenuItem value={"avi"}>Avi</MenuItem>
+        <MenuItem value={"steph"}>Steph</MenuItem>
       </Select>
       <Button
         variant="contained"
@@ -73,6 +88,7 @@ const App = () => {
             start: startTime,
             end: endTime,
             courtName,
+            userId,
           });
           await refreshAlerts();
         }}

@@ -23,6 +23,7 @@ export const AlertTable = ({
       </Button>
       <table>
         <tr>
+          <td>User</td>
           <td>Date</td>
           <td>Start Time</td>
           <td>End Time</td>
@@ -50,6 +51,7 @@ const AlertRow = ({
 }) => {
   return (
     <tr>
+      <td>{alert.userId}</td>
       <td>{alert.date.toString()}</td>
       <td>{alert.startTime.toString()}</td>
       <td>{alert.endTime.toString()}</td>

@@ -18,17 +18,19 @@ export const createNewAlert = async ({
   start,
   end,
   courtName,
+  userId,
 }: {
   date: Date;
   start: string;
   end: string;
   courtName: string;
+  userId: string;
 }) => {
   const startTime = createDateFromTimeString(start);
   const endTime = createDateFromTimeString(end);
   const courtIds = getCourtIdsForName(courtName);
   if (courtIds.length < 1) return;
-  const data = { courtIds, date, startTime, endTime };
+  const data = { courtIds, date, startTime, endTime, userId };
   const createAlertUrl = `${CONFIG.API_URL}/alert`;
   try {
     const response = await fetch(createAlertUrl, {
