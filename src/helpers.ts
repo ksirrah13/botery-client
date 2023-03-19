@@ -48,8 +48,10 @@ export const createNewAlert = async ({
   }
 };
 
-export const getAlerts = async () => {
-  const getAlertUrl = `${CONFIG.API_URL}/alerts`;
+export const getAlerts = async (userId?: string) => {
+  const getAlertUrl = `${CONFIG.API_URL}/alerts${
+    userId ? `?userId=${userId}` : ""
+  }`;
   try {
     const response = await fetch(getAlertUrl);
     const body = await response.json();

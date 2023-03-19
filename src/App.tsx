@@ -15,8 +15,8 @@ const App = () => {
 
   const [alerts, setAlerts] = useState<Alert[]>([]);
 
-  const refreshAlerts = async () => {
-    const alerts = await getAlerts();
+  const refreshAlerts = async (userIdOverride?: string) => {
+    const alerts = (await getAlerts(userIdOverride ?? userId)) ?? [];
     setAlerts(alerts);
   };
 
@@ -70,6 +70,7 @@ const App = () => {
         onChange={(event) => {
           const value = event.target.value as string;
           setUserId(value);
+          refreshAlerts(value);
         }}
         value={userId}
         label="User"
@@ -90,7 +91,7 @@ const App = () => {
             courtName,
             userId,
           });
-          await refreshAlerts();
+          await refreshAlerts(userId);
         }}
       >
         Save New Alert
