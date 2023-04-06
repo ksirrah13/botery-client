@@ -2,7 +2,7 @@ import { useState } from 'react';
 import DatePicker from 'react-date-picker';
 import TimePicker from 'react-time-picker';
 import { AlertTable } from './AlertTable';
-import { createNewAlert, getAlerts } from './helpers';
+import { COURT_IDS, createNewAlert, getAlerts } from './helpers';
 import { Alert } from './types';
 import {
   Button,
@@ -85,9 +85,11 @@ const App = () => {
           placeholder="Select court location"
           className="w-1/2"
         >
-          <MenuItem value={'hamilton'}>Hamilton</MenuItem>
-          <MenuItem value={'dupont'}>Dupont</MenuItem>
-          <MenuItem value={'mountain lake'}>Mountain Lake</MenuItem>
+          {Object.keys(COURT_IDS).map((court) => (
+            <MenuItem key={court} value={court}>
+              {court}
+            </MenuItem>
+          ))}
         </TextField>
         <TextField
           select
