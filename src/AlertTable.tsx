@@ -1,13 +1,15 @@
-import { Button } from "@mui/material";
-import { deleteAlert, getCourtName } from "./helpers";
-import { Alert } from "./types";
+import { Button } from '@mui/material';
+import { deleteAlert, getCourtName } from './helpers';
+import { Alert } from './types';
 
 export const AlertTable = ({
   alerts,
   refreshAlerts,
+  showAllTimes,
 }: {
   alerts: Alert[];
   refreshAlerts: () => void;
+  showAllTimes: boolean;
 }) => {
   return (
     <div>
@@ -30,13 +32,22 @@ export const AlertTable = ({
           <td>Court Name</td>
           <td>Status</td>
         </tr>
-        {alerts.map((alert) => (
-          <AlertRow
-            key={alert._id}
-            alert={alert}
-            refreshAlerts={refreshAlerts}
-          />
-        ))}
+        {alerts
+          .filter((alert) => {
+            console.log({
+              date: alert.date,
+              millis: new Date(alert.date).getTime(),
+              now: Date.now(),
+            });
+            return showAllTimes || new Date(alert.date).getTime() > Date.now();
+          })
+          .map((alert) => (
+            <AlertRow
+              key={alert._id}
+              alert={alert}
+              refreshAlerts={refreshAlerts}
+            />
+          ))}
       </table>
     </div>
   );

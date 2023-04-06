@@ -1,8 +1,8 @@
-import { CONFIG } from "./config";
+import { CONFIG } from './config';
 
 const createDateFromTimeString = (timeString: string) => {
   // create new date and set normalized hours and minutes
-  const [hoursString, minutesString] = timeString.split(":");
+  const [hoursString, minutesString] = timeString.split(':');
   const hours = parseInt(hoursString);
   const minutes = parseInt(minutesString);
   const newDate = new Date();
@@ -19,24 +19,28 @@ export const createNewAlert = async ({
   end,
   courtName,
   userId,
+  courtIdOverride,
 }: {
   date: Date;
   start: string;
   end: string;
   courtName: string;
   userId: string;
+  courtIdOverride?: string;
 }) => {
   const startTime = createDateFromTimeString(start);
   const endTime = createDateFromTimeString(end);
-  const courtIds = getCourtIdsForName(courtName);
+  const courtIds = courtIdOverride
+    ? courtIdOverride.split(',').map((courtId) => courtId.trim())
+    : getCourtIdsForName(courtName);
   if (courtIds.length < 1) return;
   const data = { courtIds, date, startTime, endTime, userId };
   const createAlertUrl = `${CONFIG.API_URL}/alert`;
   try {
     const response = await fetch(createAlertUrl, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -50,7 +54,7 @@ export const createNewAlert = async ({
 
 export const getAlerts = async (userId?: string) => {
   const getAlertUrl = `${CONFIG.API_URL}/alerts${
-    userId ? `?userId=${userId}` : ""
+    userId ? `?userId=${userId}` : ''
   }`;
   try {
     const response = await fetch(getAlertUrl);
@@ -66,9 +70,9 @@ export const deleteAlert = async (id: string) => {
   const data = { _id: id };
   try {
     const response = await fetch(deleteAlertUrl, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -88,9 +92,9 @@ const getCourtIdsForName = (courtName: string) => {
 };
 
 const COURT_IDS: Record<string, string[]> = {
-  hamilton: ["4441573", "3333274"],
-  dupont: ["3333198", "3333266", "4441500", "4441524"],
-  "mountain lake": ["3333197", "3333216", "3333202", "3333243"],
+  hamilton: ['4441573', '3333274'],
+  dupont: ['3333198', '3333266', '4441500', '4441524'],
+  'mountain lake': ['3333197', '3333216', '3333202', '3333243'],
 };
 
 export const getCourtName = (id: string) => {
