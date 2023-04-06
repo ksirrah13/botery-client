@@ -11,6 +11,7 @@ export const AlertTable = ({
   refreshAlerts: () => void;
   showAllTimes: boolean;
 }) => {
+  const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
   const headerCellStyle = 'p-2 border border-solid bg-slate-200 font-semibold';
   return (
     <div>
@@ -41,7 +42,9 @@ export const AlertTable = ({
           {alerts
             .filter((alert) => {
               return (
-                showAllTimes || new Date(alert.date).getTime() > Date.now()
+                showAllTimes ||
+                // alert date is normalized to midnight so move forward to end of day
+                new Date(alert.date).getTime() + ONE_DAY_IN_MS > Date.now()
               );
             })
             .sort(

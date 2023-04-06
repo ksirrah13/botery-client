@@ -91,10 +91,17 @@ const getCourtIdsForName = (courtName: string) => {
   return [];
 };
 
-const COURT_IDS: Record<string, string[]> = {
-  hamilton: ['4441573', '3333274'],
-  dupont: ['3333198', '3333266', '4441500', '4441524'],
-  'mountain lake': ['3333197', '3333216', '3333202', '3333243'],
+export const COURT_IDS: Record<string, string[]> = {
+  Hamilton: ['4441573', '3333274'],
+  DuPont: ['3333198', '3333266', '4441500', '4441524'],
+  'Mountain Lake': ['3333197', '3333216', '3333202', '3333243'],
+  'Alice Marble': ['4438853', '4433542', '3333206', '3333250'],
+  'Buena Vista': ['3333257'],
+  Dolores: ['3333264', '3676359', '3681093'],
+  'Fulton Playground': ['3333269'],
+  'JP Murphy': ['4441648', '4441694', '3333225'],
+  Lafayette: ['3333234', '4421233'],
+  McLaren: ['3333204', '3333208', '3333254', '3333255', '4441718', '4441819'],
 };
 
 export const getCourtName = (id: string) => {
