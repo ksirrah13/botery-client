@@ -40,11 +40,6 @@ export const AlertTable = ({
         <tbody>
           {alerts
             .filter((alert) => {
-              console.log({
-                date: alert.date,
-                millis: new Date(alert.date).getTime(),
-                now: Date.now(),
-              });
               return (
                 showAllTimes || new Date(alert.date).getTime() > Date.now()
               );
