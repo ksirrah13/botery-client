@@ -13,6 +13,15 @@ const createDateFromTimeString = (timeString: string) => {
   return newDate;
 };
 
+export const getTodayNormalized = () => {
+  const today = new Date()
+  today.setHours(0)
+  today.setMinutes(0)
+  today.setSeconds(0)
+  today.setMilliseconds(0)
+  return today
+}
+
 export const createNewAlert = async ({
   date,
   start,
@@ -30,6 +39,7 @@ export const createNewAlert = async ({
 }) => {
   const startTime = createDateFromTimeString(start);
   const endTime = createDateFromTimeString(end);
+
   const courtIds = courtIdOverride
     ? courtIdOverride.split(',').map((courtId) => courtId.trim())
     : getCourtIdsForName(courtName);
@@ -45,7 +55,6 @@ export const createNewAlert = async ({
       body: JSON.stringify(data),
     });
     const body = await response.json();
-    console.log(body);
     return body;
   } catch (e) {
     console.error(e);

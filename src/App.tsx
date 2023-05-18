@@ -1,22 +1,19 @@
+import {
+  Button,
+  Collapse,
+  MenuItem,
+  Switch,
+  TextField
+} from '@mui/material';
 import { useState } from 'react';
 import DatePicker from 'react-date-picker';
 import TimePicker from 'react-time-picker';
 import { AlertTable } from './AlertTable';
-import { COURT_IDS, createNewAlert, getAlerts } from './helpers';
+import { COURT_IDS, createNewAlert, getAlerts, getTodayNormalized } from './helpers';
 import { Alert } from './types';
-import {
-  Button,
-  Collapse,
-  FormControl,
-  MenuItem,
-  Select,
-  Switch,
-  TextField,
-  ToggleButton,
-} from '@mui/material';
 
 const App = () => {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(getTodayNormalized());
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('21:00');
   const [courtName, setCourtName] = useState('');
